@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+const GUPHY_API_KEY = '6k2OHU32APOAo9tmPfv6jV5PV32lPw99';
 @Injectable({
   providedIn: 'root'
 })
