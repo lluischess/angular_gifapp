@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { SearchResponse, Gif } from '../interfaces/gifs.interfaces';
 
 const GUPHY_API_KEY = '6k2OHU32APOAo9tmPfv6jV5PV32lPw99';
 @Injectable({
@@ -6,7 +8,10 @@ const GUPHY_API_KEY = '6k2OHU32APOAo9tmPfv6jV5PV32lPw99';
 })
 export class GifsService {
 
+  constructor( private http: HttpClient) { }
+
   private tagsHistory: string[] = [];
+  public gifList: Gif[] = [];
 
   get history(): string[] {
     return [...this.tagsHistory];
@@ -21,8 +26,21 @@ export class GifsService {
    this.tagsHistory.unshift(tag);
   }
 
-  searchTag(tag: string): void {
+  async searchTag(tag: string): Promise<void> {
     if (tag.length === 0) return;
     this.organizeHistory(tag);
+
+    this.http.get<SearchResponse>(`https://api.giphy.com/v1/gifs/search?api_key=${GUPHY_API_KEY}&q=${tag}&limit=10`)
+    .subscribe((res) => {
+
+      // Guardar la lista de gifs de la api
+      this.gifList = res.data;
+      console.log(this.gifList);
+    });
+
+    // Manera a lo fetch con JS
+    // fetch('https://api.giphy.com/v1/gifs/search?api_key=6k2OHU32APOAo9tmPfv6jV5PV32lPw99&q=lol&limit=10')
+    // .then((res) => res.json())
+    // .then((res) => console.log(res));
   }
 }

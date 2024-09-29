@@ -1,12 +1,18 @@
 <div class="row">
+
+  @for (gif of gifs; track $index) {
   <div class="col-md-3 col-sm-6">
     <div class=" card mb-2 text-center bg-dark">
         <!-- Card body -->
          <div class="card-body text-white">
           <p class="card-text">
-              Hola
+              {{gif.title}}
           </p>
          </div>
+
+        <!-- Card image -->
+        <img class="card-img-top" src="{{gif.images.downsized_medium.url}}" alt="Card image cap">
     </div>
   </div>
+}
 </div>
