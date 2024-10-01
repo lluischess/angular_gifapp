@@ -8,7 +8,9 @@ const GUPHY_API_KEY = '6k2OHU32APOAo9tmPfv6jV5PV32lPw99';
 })
 export class GifsService {
 
-  constructor( private http: HttpClient) { }
+  constructor( private http: HttpClient) {
+    this.loadLocalStorage();
+   }
 
   private tagsHistory: string[] = [];
   public gifList: Gif[] = [];
@@ -24,6 +26,19 @@ export class GifsService {
      this.tagsHistory = this.tagsHistory.filter((oldTag) => oldTag !== tag);
    }
    this.tagsHistory.unshift(tag);
+   this.saveLocalStorage();
+  }
+
+private saveLocalStorage(): void {
+      localStorage.setItem('history', JSON.stringify(this.tagsHistory));
+    }
+
+  private loadLocalStorage(): void {
+    if (!localStorage.getItem('history')) {
+      return;
+    }
+    this.tagsHistory = JSON.parse(localStorage.getItem('history')!);
+    this.searchTag(this.tagsHistory[0]);
   }
 
   async searchTag(tag: string): Promise<void> {
@@ -37,6 +52,8 @@ export class GifsService {
       this.gifList = res.data;
       console.log(this.gifList);
     });
+
+
 
     // Manera a lo fetch con JS
     // fetch('https://api.giphy.com/v1/gifs/search?api_key=6k2OHU32APOAo9tmPfv6jV5PV32lPw99&q=lol&limit=10')
