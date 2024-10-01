@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { GifsService } from '../../../gifs/services/gifs.service';
+import { Gif } from '../../../gifs/interfaces/gifs.interfaces';
 
 @Component({
   selector: 'shared-sidebar',
@@ -13,5 +14,9 @@ export class SidebarComponent {
     const list = this.gifsService.history;
     // devuelve un maximo de 10 elementos
       return list.slice(0, 10);
+  }
+
+  searchTag(tag: string): void {
+    this.gifsService.searchTag(tag);
   }
 }
